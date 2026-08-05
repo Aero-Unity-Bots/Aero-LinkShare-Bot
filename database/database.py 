@@ -1,7 +1,4 @@
-# ------------------------- #
-# Don't Remove Credit 
-# Owner @Mr_Mohammed_29
-# ------------------------- #
+
 
 import motor.motor_asyncio
 import base64
