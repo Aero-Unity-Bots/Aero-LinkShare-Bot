@@ -1,3 +1,4 @@
+
 # ------------------------- #
 # Don't Remove Credit 
 # Owner @Mr_Mohammed_29
@@ -19,7 +20,6 @@ from pyrogram.enums import ParseMode, ChatMemberStatus, ChatAction
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, InputMediaPhoto
 from pyrogram.errors import FloodWait, UserNotParticipant, UserIsBlocked, InputUserDeactivated, MessageNotModified
 import os
-import asyncio
 from asyncio import sleep
 from asyncio import Lock
 import random
@@ -70,6 +70,23 @@ async def start_command(client: Client, message: Message):
                 "<b><blockquote expandable>You are temporarily banned from using commands due to spamming. Try again later.</b>",
                 parse_mode=ParseMode.HTML
             )
+   # ---------------- ANIMATION ----------------
+    try:
+        m = await message.reply_text("愛 ʙᴀɴᴋᴀɪ! . .")
+        await asyncio.sleep(0.5)
+
+        await m.edit_text("🎭")
+        await asyncio.sleep(0.5)
+
+        await m.edit_text("🌟")
+        await asyncio.sleep(0.5)
+
+        await m.edit_text("Zᴀɴɢᴇᴛsᴜ!...")
+        await asyncio.sleep(0.5)
+
+        await m.delete()
+    except Exception as e:
+        print(f"ANIMATION ERROR: {e}")      
             
     await add_user(user_id)
 
@@ -535,8 +552,8 @@ async def auto_delete(sent_msg, duration):
     await asyncio.sleep(duration)
     try:
         await sent_msg.delete()
-    except:
-        pass
+    except Exception as e:
+        print(f"Auto delete error: {e}")
 
 # ------------------------- #
 # Don't Remove Credit 
@@ -554,8 +571,6 @@ user_message_count = {}
 MAX_MESSAGES = 3
 TIME_WINDOW = timedelta(seconds=10)
 BAN_DURATION = timedelta(hours=1)
-
-"""
 
 # ------------------------- #
 # Don't Remove Credit 
@@ -594,8 +609,6 @@ async def monitor_messages(client: Client, message: Message):
         )
         return
 
-"""
-
 # ------------------------- #
 # Don't Remove Credit 
 # Owner @Mr_Mohammed_29
@@ -610,8 +623,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
         await query.message.delete()
         try:
             await query.message.reply_to_message.delete()
-        except:
-            pass
+        except Exception as e:
+            print(f"Close callback error: {e}")
     
     elif data == "about":
         try:
@@ -719,7 +732,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 mode = await db.get_channel_mode(cid)
                 status = "🟢" if mode == "on" else "🔴"
                 buttons.append([InlineKeyboardButton(f"{status} {chat.title}", callback_data=f"rfs_ch_{cid}")])
-            except:
+            except Exception as e:
+                print(f"FSub back error: {e}")
                 continue
 
         await query.message.edit_text(
@@ -737,8 +751,8 @@ def delete_after_delay(msg, delay):
         await asyncio.sleep(delay)
         try:
             await msg.delete()
-        except:
-            pass
+        except Exception as e:
+            print(f"Delete after delay error: {e}")
     return inner()
 
 # ------------------------- #
