@@ -3,6 +3,9 @@
 # Owner @Mr_Mohammed_29
 # ------------------------- #
 
+import psutil 
+import time 
+
 from pyrogram.types import Message
 from pyrogram import Client, filters, StopPropagation
 from config import OWNER_ID, BOT_STATS_TEXT, USER_REPLY_TEXT, USER_ROAST, ADMINS
@@ -77,34 +80,74 @@ async def useless_reply(bot: Client, message: Message):
 # ------------------------- #
 
 # --- 2. STATS COMMAND (WITH SECURITY) ---
-@Client.on_message(filters.command('stats') & filters.private)
+@Client.on_message(filters.command("stats") & filters.private)
 async def stats(bot: Client, message: Message):
     user_id = message.from_user.id
-    
+
     if user_id != OWNER_ID:
         if USER_REPLY_TEXT:
             await message.reply_text(USER_REPLY_TEXT)
         return
 
+    start = time.time()
+    wait = await message.reply_text("<code>📊 Extracting Statistics...</code>")
+
+    # Ping
+    ping = (time.time() - start) * 1000
+
+    # Uptime
     now = datetime.now()
     delta = now - bot.uptime
-    uptime_time = get_readable_time(delta.seconds)
-    
-    wait_msg = await message.reply_text("<code>📊 Extracting Stats...</code>")
-    
+    uptime = get_readable_time(int(delta.total_seconds()))
+
+    # Users
     try:
-        total_users = await count_users()
+        users = await count_users()
     except:
-        total_users = "Error"
+        users = 0
 
-    final_text = (
-        "<b>📊 ʟɪɴᴋ sʜᴀʀᴇ ʙᴏᴛ sᴛᴀᴛs</b>\n\n"
-        f"<b>🚀 ᴜᴘᴛɪᴍᴇ:</b> <code>{uptime_time}</code>\n"
-        f"<b>👤 ᴛᴏᴛᴀʟ ᴜsᴇʀs:</b> <code>{total_users}</code>\n"
-        f"<b>🔐 ᴀᴄᴄᴇss:</b> ꜰᴜʟʟ ᴄᴏɴᴛʀᴏʟ"
-    )
-    await wait_msg.edit_text(final_text)
+    # RAM
+    ram = psutil.virtual_memory()
+    ram_percent = ram.percent
 
+    # CPU
+    cpu_percent = psutil.cpu_percent(interval=1)
+
+    # Disk
+    disk = psutil.disk_usage("/")
+    disk_percent = disk.percent
+
+    used = disk.used / (1024 ** 3)
+    free = disk.free / (1024 ** 3)
+    total = disk.total / (1024 ** 3)
+
+    def progress(percent):
+        filled = int(percent // 10)
+        if filled >= 10:
+            return "■" * 10
+        return "■" * filled + "▤" + "□" * (9 - filled)
+
+    text = f"""
+<b>⌬ 𝗕𝗢𝗧 𝗦𝗧𝗔𝗧𝗜𝗦𝗧𝗜𝗖𝗦 :</b>
+
+┎ <b>Bᴏᴛ Uᴘᴛɪᴍᴇ :</b> <code>{uptime}</code>
+┃ <b>Cᴜʀʀᴇɴᴛ Pɪɴɢ :</b> <code>{ping:.3f} ms</code>
+┖ <b>Tᴏᴛᴀʟ Uꜱᴇʀꜱ :</b> <code>{users}</code>
+
+┎ <b>RAM ( MEMORY ) :</b>
+┖ <code>[{progress(ram_percent)}] {ram_percent:.1f}%</code>
+
+┎ <b>CPU ( USAGE ) :</b>
+┖ <code>[{progress(cpu_percent)}] {cpu_percent:.1f}%</code>
+
+┎ <b>DISK :</b>
+┃ <code>[{progress(disk_percent)}] {disk_percent:.1f}%</code>
+┃ <b>Usᴇᴅ :</b> <code>{used:.2f} GB</code>
+┃ <b>Fʀᴇᴇ :</b> <code>{free:.2f} GB</code>
+┖ <b>Tᴏᴛᴀʟ :</b> <code>{total:.2f} GB</code>
+"""
+
+    await wait.edit_text(text)
 # ------------------------- #
 # Don't Remove Credit 
 # Owner @Mr_Mohammed_29
