@@ -1,19 +1,19 @@
 # ------------------------- #
-# Don't Remove Credit 
+# Don't Remove Credit
 # Owner @Mr_Mohammed_29
 # ------------------------- #
 
 pyrofork==2.3.59
-TgCrypto 
+TgCrypto
 python-dotenv
-pymongo 
-dnspython 
-motor 
+pymongo
+dnspython
+motor
 aiohttp
-asyncio
 aiofiles
+psutil
 
 # ------------------------- #
-# Don't Remove Credit 
+# Don't Remove Credit
 # Owner @Mr_Mohammed_29
 # ------------------------- #
