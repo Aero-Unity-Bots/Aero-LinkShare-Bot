@@ -1,4 +1,3 @@
-
 import motor.motor_asyncio
 import base64
 from config import DB_URI, DB_NAME
