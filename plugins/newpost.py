@@ -192,11 +192,21 @@ async def send_channel_page(client, message, channels, page, edit=False):
     if nav_buttons:
         buttons.append(nav_buttons)
 
+    if not buttons:
+        return await message.reply("<b>No valid channels found.</b>")
+
     reply_markup = InlineKeyboardMarkup(buttons)
+
     if edit:
-        await message.edit_text("Sᴇʟᴇᴄᴛ ᴀ ᴄʜᴀɴɴᴇʟ ᴛᴏ ᴀᴄᴄᴇss:", reply_markup=reply_markup)
+        await message.edit_text(
+            "Sᴇʟᴇᴄᴛ ᴀ ᴄʜᴀɴɴᴇʟ ᴛᴏ ᴀᴄᴄᴇss:",
+            reply_markup=reply_markup
+        )
     else:
-        await message.reply("Sᴇʟᴇᴄᴛ ᴄʜᴀɴɴᴇʟ:", reply_markup=reply_markup)
+        await message.reply(
+            "Sᴇʟᴇᴄᴛ ᴄʜᴀɴɴᴇʟ:",
+            reply_markup=reply_markup
+        )
 
 # ------------------------- #
 # Don't Remove Credit 
