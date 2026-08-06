@@ -3,7 +3,6 @@
 # Owner @Mr_Mohammed_29
 # ------------------------- #
 
-# Upgraded by @Unrated_Coder from Telegram
 import os
 import asyncio
 from config import *
