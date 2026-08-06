@@ -45,8 +45,19 @@ class IsOwnerOrAdmin(Filter):
     async def __call__(self, client, message):
         if not message.from_user:
             return False
+
         user_id = message.from_user.id
-        return user_id == OWNER_ID or await is_admin(user_id)
+
+        if user_id == OWNER_ID:
+            return True
+
+        if user_id in ADMINS:
+            return True
+
+        if await is_admin(user_id):
+            return True
+
+        return False
 
 is_owner_or_admin = IsOwnerOrAdmin()
 
